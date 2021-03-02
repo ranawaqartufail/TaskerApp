@@ -1,0 +1,59 @@
+<nz-layout class="app-layout">
+    <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
+      [nzTrigger]="null">
+      <div class="sidebar-logo">
+        <h1>Task App</h1>
+      </div>
+      <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <li nz-submenu nzOpen nzTitle="Projects">
+          <ul *ngFor="let project of allProjects">
+            <li nz-menu-item>
+              <a [routerLink]="['project/' +project.id]">{{project.name}}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <button class="button" nz-button nzType="primary" (click)="showModal()"><i nz-icon nzType="plus-circle"></i></button>
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="Create Project" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <ng-container *nzModalContent>
+          <form nz-form [formGroup]="createForm" (ngSubmit)="onCreate(createForm.value)">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="6" nzFor="name">name</nz-form-label>
+              <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="name" id="name">
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label [nzSpan]="6" nzFor="name">Description</nz-form-label>
+              <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="description" id="description">
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-control>
+                <button nz-button [nzType]="'primary'" type="submit">submit</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </ng-container>
+      </nz-modal>
+    </nz-sider>
+    <nz-layout>
+      <nz-header>
+        <div class="app-header">
+          <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+          </span>
+          <nz-button-group>
+          <button nz-button [nzType]="'primary'" (click)="signOut()">Logout</button>
+          </nz-button-group>
+        </div>
+      </nz-header>
+      <nz-content>
+        <div class="inner-content">
+          <router-outlet ></router-outlet>
+        </div>
+      </nz-content>
+      <nz-footer>©2021 Implement By Angular</nz-footer>
+    </nz-layout>
+  </nz-layout>
